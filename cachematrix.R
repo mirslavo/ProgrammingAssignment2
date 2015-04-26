@@ -1,15 +1,27 @@
-## Put comments here that give an overall description of what your
-## functions do
+## components for PA2
 
-## Write a short comment describing this function
-
-makeCacheMatrix <- function(x = matrix()) {
-
+## cacheable matrix
+makeCacheMatrix <- function(m = matrix()) {
+  im <- NULL
+  set <- function(m_new) {
+    m <<- m_new
+    im <<- NULL
+  }
+  get <- function() m
+  setim <- function(im_new) im <<- im_new
+  getim <- function() im
+  list(set = set, get = get, setim = setim, getim = getim)
 }
 
-
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+## maintain inverse matrix considering cached data
+cacheSolve <- function(m, ...) {
+  ## Return a matrix that is the inverse of 'm'
+  im <- m$getim()
+  if(!is.null(im)) {
+    message("getting cached data")
+    return(im)
+  }
+  im <- solve(m$get(), ...)
+  m$setim(im)
+  im
 }
